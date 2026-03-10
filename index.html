@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jorge Peduti — Analytics Engineer</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #06111f;
+      --bg2: #0a192f;
+      --bg3: #112240;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #38bdf8;
+      --accent2: #0284c7;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --card: #0f172a;
+      --nav-bg: rgba(6, 17, 31, 0.85);
+      --input-bg: #0f172a;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg: #f0f4f8;
+      --bg2: #e2e8f0;
+      --bg3: #cbd5e1;
+      --border: rgba(0, 0, 0, 0.09);
+      --accent: #0284c7;
+      --accent2: #0369a1;
+      --text: #0f172a;
+      --muted: #475569;
+      --card: #ffffff;
+      --nav-bg: rgba(240, 244, 248, 0.92);
+      --input-bg: #ffffff;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    [data-theme="dark"] body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 4rem;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.35s ease;
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-decoration: none;
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-center a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-center a:hover {
+      color: var(--accent);
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .lang-toggle {
+      display: flex;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .lang-btn {
+      padding: 0.4rem 0.75rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .theme-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .theme-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      transition: opacity 0.35s;
+    }
+
+    [data-theme="light"] .hero-grid-bg {
+      background-image:
+        linear-gradient(rgba(2, 132, 199, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(2, 132, 199, 0.07) 1px, transparent 1px);
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .hero-glow2 {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(2, 132, 199, 0.06) 0%, transparent 70%);
+      bottom: 0;
+      left: 10%;
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      max-width: 560px;
+      margin-top: 2rem;
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.6s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.8s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.12);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      background: transparent;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.7s ease 1s forwards;
+      flex-wrap: wrap;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-num span {
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 7rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 3rem;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .domains {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .domain-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      transition: all 0.2s;
+    }
+
+    .domain-item:hover {
+      background: rgba(56, 189, 248, 0.04);
+      transform: translateX(4px);
+    }
+
+    .domain-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .domain-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PROJECTS ── */
+    #projects {
+      background: var(--bg2);
+      max-width: 100%;
+      padding: 7rem 0;
+    }
+
+    #projects .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 4rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      box-shadow: var(--shadow);
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .project-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .project-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-kpi {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-kpi span {
+      color: var(--accent);
+    }
+
+    .project-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      padding: 0.25rem 0.6rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── STACK ── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .stack-item {
+      background: var(--card);
+      padding: 2rem;
+      transition: background 0.2s;
+    }
+
+    .stack-item:hover {
+      background: var(--bg3);
+    }
+
+    .stack-tool {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .stack-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .stack-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .stack-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+      padding-left: 1.4rem;
+    }
+
+    /* ── PROCESS ── */
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 1.2rem;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .process-step {
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin: 0 auto 1.25rem;
+      background: var(--bg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--bg2);
+      max-width: 100%;
+      padding: 7rem 4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .contact-link-icon {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+    }
+
+    .contact-link-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text);
+    }
+
+    /* ── FORM ── */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.35s;
+      width: 100%;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: var(--accent);
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .form-select {
+      cursor: pointer;
+      appearance: none;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .form-submit:hover {
+      filter: brightness(1.12);
+      transform: translateY(-2px);
+    }
+
+    .form-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-success {
+      display: none;
+      padding: 1.5rem;
+      background: rgba(56, 189, 248, 0.07);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ── LANG VISIBILITY ── */
+    [data-lang="en"] [data-pt],
+    [data-lang="pt"] [data-en] {
+      display: none !important;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav {
+        padding: 1.25rem 1.5rem;
+      }
+
+      .nav-center {
+        display: none;
+      }
+
+      .hero {
+        padding: 8rem 1.5rem 4rem;
+      }
+
+      section {
+        padding: 5rem 1.5rem;
+      }
+
+      .about-grid,
+      .projects-grid,
+      .contact-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .about-grid {
+        gap: 2.5rem;
+      }
+
+      .stack-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process-steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .process-steps::before {
+        display: none;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      #contact {
+        padding: 5rem 1.5rem;
+      }
+
+      #projects .inner {
+        padding: 0 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a class="nav-logo" href="#">JP_ANALYTICS</a>
+    <ul class="nav-center">
+      <li><a href="#about"><span data-en>About</span><span data-pt>Sobre</span></a></li>
+      <li><a href="#projects"><span data-en>Projects</span><span data-pt>Projetos</span></a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#contact"><span data-en>Contact</span><span data-pt>Contato</span></a></li>
+    </ul>
+    <div class="nav-controls">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
+      </div>
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">☀</button>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+
+    <p class="hero-tag">// Analytics Engineering · Supply Chain · Data Warehouse</p>
+
+    <h1>
+      <span data-en>Supply Chain data<br>is <em>complex.</em><br>I make it simple.</span>
+      <span data-pt>Dados de Supply Chain<br>são <em>complexos.</em><br>Eu simplifico.</span>
+    </h1>
+
+    <p class="hero-sub">
+      <span data-en>5+ years living inside Order-to-Cash, Procure-to-Pay, Inventory, and International Trade — then
+        building the data infrastructure that makes them transparent, reliable, and decision-ready.</span>
+      <span data-pt>5+ anos dentro de processos de Order-to-Cash, Procure-to-Pay, Estoque e Comércio Internacional — e
+        construindo a infraestrutura de dados que os torna transparentes, confiáveis e prontos para decisão.</span>
+    </p>
+
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">
+        <span data-en>View Projects →</span>
+        <span data-pt>Ver Projetos →</span>
+      </a>
+      <a href="https://www.linkedin.com/in/jorge-peduti-b133881a6/" target="_blank" class="btn-ghost">LinkedIn ↗</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">5<span>+</span></div>
+        <div class="stat-label"><span data-en>Years in<br>Supply Chain data</span><span data-pt>Anos em dados<br>de
+            Supply Chain</span></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4</div>
+        <div class="stat-label"><span data-en>ERP Implementations<br>led or supported</span><span data-pt>Implementações
+            de ERP<br>lideradas ou suportadas</span></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1<span>×</span></div>
+        <div class="stat-label"><span data-en>Source of truth<br>per domain delivered</span><span data-pt>Fonte única de
+            verdade<br>entregue por domínio</span></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">0</div>
+        <div class="stat-label"><span data-en>Dashboards built<br>without a defined owner</span><span data-pt>Dashboards
+            entregues<br>sem um dono definido</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <p class="section-label">// 01 — <span data-en>About</span><span data-pt>Sobre</span></p>
+    <h2 class="section-title reveal">
+      <span data-en>The professional who knows<br><em>where the data breaks.</em></span>
+      <span data-pt>O profissional que sabe<br><em>onde o dado quebra.</em></span>
+    </h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p data-en>I'm a <strong>Data & Analytics Engineer</strong> with over 5 years working inside the most
+          operationally complex domains in business: Order-to-Cash, Procure-to-Pay, Manufacturing, Inventory, and
+          International Trade. Not just analyzing data from them — living inside them.</p>
+        <p data-en>That depth is my edge. I understand how a Purchase Order behaves differently across three ERP
+          systems, why an invoice's status field means different things before and after month-end close, and where the
+          data silently breaks before it ever reaches a dashboard.</p>
+        <p data-en>I've led ERP implementations and transitions for <strong>NetSuite, Dynamics AX, Zoho, and
+            OSGT</strong> — working as both Project Manager and Key User. That experience means I design data models
+          with source systems in mind, not against them.</p>
+        <p data-en>My deliverables get used. That's the metric that matters.</p>
+
+        <p data-pt>Sou <strong>Data & Analytics Engineer</strong> com mais de 5 anos dentro dos domínios operacionais
+          mais complexos: Order-to-Cash, Procure-to-Pay, Manufatura, Estoque e Comércio Internacional. Não apenas
+          analisando dados — vivendo dentro dos processos.</p>
+        <p data-pt>Esse é meu diferencial. Entendo como uma Ordem de Compra se comporta diferente em três ERPs, por que
+          o campo de status de uma nota fiscal muda de significado antes e depois do fechamento do mês, e onde o dado
+          quebra silenciosamente antes de chegar a qualquer dashboard.</p>
+        <p data-pt>Liderei implementações de <strong>NetSuite, Dynamics AX, Zoho e OSGT</strong> como Gerente de Projeto
+          e Key User. Esse histórico me permite projetar modelos de dados com o sistema de origem em mente — não contra
+          ele.</p>
+        <p data-pt>Meus entregáveis são usados. Essa é a métrica que importa.</p>
+      </div>
+      <div class="domains reveal">
+        <div class="domain-item"><span class="domain-icon">⟶</span><span class="domain-text">Order-to-Cash (O2C)</span>
+        </div>
+        <div class="domain-item"><span class="domain-icon">⟶</span><span class="domain-text">Procure-to-Pay (P2P)</span>
+        </div>
+        <div class="domain-item"><span class="domain-icon">⟶</span><span class="domain-text">Lead-to-Quote</span></div>
+        <div class="domain-item"><span class="domain-icon">⟶</span><span class="domain-text">Manufacturing</span></div>
+        <div class="domain-item"><span class="domain-icon">⟶</span><span class="domain-text">Inventory Management</span>
+        </div>
+        <div class="domain-item"><span class="domain-icon">⟶</span><span class="domain-text">International Trade (Import
+            & Export)</span></div>
+        <div class="domain-item"><span class="domain-icon">⟶</span><span class="domain-text">ERP Transition &
+            Implementation</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROJECTS ── -->
+  <section id="projects">
+    <div class="inner">
+      <p class="section-label">// 02 — <span data-en>Projects</span><span data-pt>Projetos</span></p>
+      <h2 class="section-title reveal">
+        <span data-en>Work that <em>changed numbers,</em><br>not just views.</span>
+        <span data-pt>Projetos que <em>mudaram números,</em><br>não só visualizações.</span>
+      </h2>
+      <div class="projects-grid">
+
+        <div class="project-card reveal">
+          <p class="project-num">PROJECT_01</p>
+          <div class="project-kpi"><span>−45%</span><br><span data-en>reporting cycle time</span><span data-pt>tempo de
+              fechamento de relatórios</span></div>
+          <p class="project-title">
+            <span data-en>Order-to-Cash Analytics — From ERP Raw Data to Revenue Intelligence</span>
+            <span data-pt>Analytics de O2C — Do Dado Bruto do ERP à Inteligência de Receita</span>
+          </p>
+          <p class="project-desc">
+            <span data-en>Designed a dbt project modeling the full O2C cycle from NetSuite raw tables — sales orders,
+              invoices, payments, AR aging — into a reliable mart layer. Replaced a weekly manual Excel process with
+              automated Looker dashboards. Tests implemented at every layer to catch upstream ERP
+              inconsistencies.</span>
+            <span data-pt>Projeto dbt modelando o ciclo completo de O2C a partir das tabelas brutas do NetSuite —
+              pedidos, notas, pagamentos e aging — em uma camada mart confiável. Substituiu processo manual semanal em
+              Excel por dashboards Looker automatizados com testes em cada camada.</span>
+          </p>
+          <div class="project-tags">
+            <span class="tag">dbt</span><span class="tag">BigQuery</span><span class="tag">Looker</span><span
+              class="tag">NetSuite</span><span class="tag">SQL</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <p class="project-num">PROJECT_02</p>
+          <div class="project-kpi"><span>−30%</span><br><span data-en>AP reconciliation gaps</span><span
+              data-pt>divergências em conciliação AP</span></div>
+          <p class="project-title">
+            <span data-en>Procure-to-Pay Pipeline — Unifying Purchasing, Receiving and AP Data</span>
+            <span data-pt>Pipeline de P2P — Unificando Compras, Recebimento e Contas a Pagar</span>
+          </p>
+          <p class="project-desc">
+            <span data-en>Built an ELT pipeline with Airflow ingesting data from Dynamics AX into BigQuery, modeled in
+              dbt across staging → intermediate → mart. Eliminated three conflicting definitions of "open PO" that
+              different teams were operating with simultaneously.</span>
+            <span data-pt>Pipeline ELT com Airflow ingerindo dados do Dynamics AX no BigQuery, modelados em dbt nas
+              camadas staging → intermediate → mart. Eliminou três definições conflitantes de "PO em aberto" que
+              diferentes times usavam ao mesmo tempo.</span>
+          </p>
+          <div class="project-tags">
+            <span class="tag">Airflow</span><span class="tag">dbt</span><span class="tag">BigQuery</span><span
+              class="tag">Power BI</span><span class="tag">Dynamics AX</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <p class="project-num">PROJECT_03</p>
+          <div class="project-kpi"><span>+50%</span><br><span data-en>inventory visibility</span><span
+              data-pt>visibilidade de estoque</span></div>
+          <p class="project-title">
+            <span data-en>Inventory & International Trade — Visibility Across Borders</span>
+            <span data-pt>Estoque & Comércio Internacional — Visibilidade Sem Fronteiras</span>
+          </p>
+          <p class="project-desc">
+            <span data-en>Architected a data model covering inventory movements, import/export flows, customs compliance
+              statuses, and landed cost tracking from multiple ERP and logistics systems. Replaced a fragmented process
+              where import status lived in spreadsheets across three separate teams.</span>
+            <span data-pt>Modelo de dados cobrindo movimentações de estoque, fluxos de importação/exportação, status de
+              compliance aduaneiro e custo de desembaraço — unificando múltiplos sistemas. Substituiu processo
+              fragmentado em planilhas gerenciadas por três times sem fonte única de verdade.</span>
+          </p>
+          <div class="project-tags">
+            <span class="tag">BigQuery</span><span class="tag">dbt</span><span class="tag">Python</span><span
+              class="tag">Looker</span><span class="tag">GCP</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STACK ── -->
+  <section id="stack">
+    <p class="section-label">// 03 — Stack</p>
+    <h2 class="section-title reveal">
+      <span data-en>Tools I use to build<br><em>things people trust.</em></span>
+      <span data-pt>Ferramentas para construir<br><em>coisas em que confiam.</em></span>
+    </h2>
+    <div class="stack-grid reveal">
+      <div class="stack-item">
+        <div class="stack-tool">
+          <div class="stack-dot"></div><span class="stack-name">dbt</span>
+        </div>
+        <p class="stack-desc">
+          <span data-en>I use dbt to enforce business logic as code: modular models, documented contracts, tested
+            metrics. If a KPI goes to production without a test, it's not ready for production.</span>
+          <span data-pt>Uso dbt para transformar lógica de negócio em código: modelos modulares, contratos documentados,
+            métricas testadas. Se um KPI vai para produção sem teste, não está pronto para produção.</span>
+        </p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tool">
+          <div class="stack-dot"></div><span class="stack-name">BigQuery / GCP</span>
+        </div>
+        <p class="stack-desc">
+          <span data-en>My primary analytical layer. I design schemas with query cost and performance in mind —
+            partitioning, clustering, and incremental models are defaults, not afterthoughts.</span>
+          <span data-pt>Minha camada analítica principal. Projeto schemas com custo e performance em mente —
+            particionamento, clustering e modelos incrementais são padrão, não exceção.</span>
+        </p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tool">
+          <div class="stack-dot"></div><span class="stack-name">Airflow</span>
+        </div>
+        <p class="stack-desc">
+          <span data-en>I build pipelines that are observable by design: explicit dependencies, alerting, documentation
+            baked in. Not pipelines that run until they mysteriously don't.</span>
+          <span data-pt>Construo pipelines observáveis por design: dependências explícitas, alertas e documentação
+            integrados. Não pipelines que funcionam até misteriosamente pararem.</span>
+        </p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tool">
+          <div class="stack-dot"></div><span class="stack-name">Looker / Power BI</span>
+        </div>
+        <p class="stack-desc">
+          <span data-en>I build for adoption. A dashboard no one uses is a failed project. Every report I deliver has a
+            defined owner, a defined question, and a defined action it enables.</span>
+          <span data-pt>Construo para adoção. Um dashboard que ninguém usa é um projeto fracassado. Todo relatório que
+            entrego tem um dono, uma pergunta e uma ação esperada.</span>
+        </p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tool">
+          <div class="stack-dot"></div><span class="stack-name">SQL & Python</span>
+        </div>
+        <p class="stack-desc">
+          <span data-en>SQL is how I think about data. Python is how I automate the parts that shouldn't be manual. I
+            use both where they're strongest, not where they're fashionable.</span>
+          <span data-pt>SQL é como penso sobre dados. Python é como automatizo o que não deveria ser manual. Uso ambos
+            onde são mais fortes, não onde estão na moda.</span>
+        </p>
+      </div>
+      <div class="stack-item">
+        <div class="stack-tool">
+          <div class="stack-dot"></div><span class="stack-name">ERP Systems</span>
+        </div>
+        <p class="stack-desc">
+          <span data-en>NetSuite, Dynamics AX, Zoho, OSGT — I've been inside these as Key User and PM. I know how source
+            data is generated, not just how to query it. That changes everything about how I model it.</span>
+          <span data-pt>NetSuite, Dynamics AX, Zoho, OSGT — estive dentro como Key User e PM. Sei como o dado de origem
+            é gerado, não só como consultá-lo. Isso muda tudo na hora de modelar.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROCESS ── -->
+  <section id="process">
+    <p class="section-label">// 04 — <span data-en>How I Work</span><span data-pt>Como Trabalho</span></p>
+    <h2 class="section-title reveal">
+      <span data-en>From <em>messy source</em><br>to trusted decision.</span>
+      <span data-pt>Da <em>fonte caótica</em><br>à decisão confiável.</span>
+    </h2>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <p class="step-title"><span data-en>Understand the Process</span><span data-pt>Entender o Processo</span></p>
+        <p class="step-desc"><span data-en>Before touching a query, I map the business process end-to-end. Where does
+            the data originate? What does "status" actually mean in this ERP?</span><span data-pt>Antes de escrever uma
+            query, mapeo o processo de ponta a ponta. De onde vem o dado? O que "status" realmente significa nesse
+            ERP?</span></p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <p class="step-title"><span data-en>Architect the Model</span><span data-pt>Arquitetar o Modelo</span></p>
+        <p class="step-desc"><span data-en>Design a layered dbt model — staging, intermediate, mart — with clear
+            contracts between layers and tests on every critical metric.</span><span data-pt>Projeto modelo em camadas
+            no dbt — staging, intermediate, mart — com contratos claros e testes em cada métrica crítica.</span></p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <p class="step-title"><span data-en>Build & Orchestrate</span><span data-pt>Construir & Orquestrar</span></p>
+        <p class="step-desc"><span data-en>ELT pipelines with Airflow on GCP. Incremental loads, alerting, observable
+            dependencies. Infrastructure the business can rely on daily.</span><span data-pt>Pipelines ELT com Airflow
+            no GCP. Cargas incrementais, alertas e dependências observáveis. Infraestrutura confiável todo dia.</span>
+        </p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <p class="step-title"><span data-en>Deliver to Decisions</span><span data-pt>Entregar para Decisões</span></p>
+        <p class="step-desc"><span data-en>Looker or Power BI surfaces built for a specific owner, question, and action.
+            Adoption is the final measure of success.</span><span data-pt>Dashboards no Looker ou Power BI com dono,
+            pergunta e ação definidos. Adoção é a medida final de sucesso.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <div id="contact">
+    <div class="contact-inner">
+
+      <div class="contact-left reveal">
+        <p class="section-label">// 05 — <span data-en>Let's Talk</span><span data-pt>Vamos Conversar</span></p>
+        <h2 class="section-title" style="margin-bottom:1.25rem;">
+          <span data-en>If your team still <em>reconciles</em> metrics in meetings —</span>
+          <span data-pt>Se seu time ainda <em>reconcilia</em> métricas em reunião —</span>
+        </h2>
+        <p class="contact-sub">
+          <span data-en>Messy ERP data, conflicting KPIs, pipelines nobody trusts. That's the problem I solve. Let's
+            have a direct conversation.</span>
+          <span data-pt>Dados bagunçados de ERP, KPIs conflitantes, pipelines em que ninguém confia. Esse é o problema
+            que eu resolvo. Vamos conversar diretamente.</span>
+        </p>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/jorge-peduti-b133881a6/" target="_blank" class="contact-link">
+            <span class="contact-link-icon">in</span>
+            <span class="contact-link-text">linkedin.com/in/jorge-peduti</span>
+          </a>
+          <a href="mailto:jorge@email.com" class="contact-link">
+            <span class="contact-link-icon">@</span>
+            <span class="contact-link-text"><span data-en>Send an email</span><span data-pt>Enviar um
+                e-mail</span></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-name"><span data-en>Name</span><span data-pt>Nome</span></label>
+              <input class="form-input" id="f-name" type="text" placeholder="Jorge Peduti" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-email">E-mail</label>
+              <input class="form-input" id="f-email" type="email" placeholder="jorge@company.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-subject"><span data-en>Subject</span><span data-pt>Assunto</span></label>
+            <select class="form-select" id="f-subject" required>
+              <option value="" disabled selected id="ph-opt"></option>
+              <option data-en value="fulltime">Full-time opportunity</option>
+              <option data-en value="freelance">Freelance / consulting project</option>
+              <option data-en value="collab">Collaboration</option>
+              <option data-en value="other">Other</option>
+              <option data-pt value="fulltime-pt">Oportunidade CLT/PJ</option>
+              <option data-pt value="freelance-pt">Projeto freelance / consultoria</option>
+              <option data-pt value="collab-pt">Colaboração</option>
+              <option data-pt value="other-pt">Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-message"><span data-en>Message</span><span data-pt>Mensagem</span></label>
+            <textarea class="form-textarea" id="f-message" placeholder="..." required></textarea>
+          </div>
+          <button class="form-submit" type="submit" id="submit-btn">
+            <span data-en>Send Message →</span>
+            <span data-pt>Enviar Mensagem →</span>
+          </button>
+          <div class="form-success" id="form-success">
+            <span data-en>✓ Message sent! I'll get back to you within 24h.</span>
+            <span data-pt>✓ Mensagem enviada! Retorno em até 24h.</span>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span class="footer-copy">© 2025 Jorge Peduti — Analytics Engineer</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/jorge-peduti-b133881a6/" target="_blank">LinkedIn</a>
+      <a href="#about"><span data-en>About</span><span data-pt>Sobre</span></a>
+      <a href="#projects"><span data-en>Projects</span><span data-pt>Projetos</span></a>
+      <a href="#stack">Stack</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ── THEME ── */
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isNowLight = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isNowLight ? 'light' : 'dark');
+      document.getElementById('theme-btn').textContent = isNowLight ? '☾' : '☀';
+    }
+
+    /* ── LANGUAGE ── */
+    function setLang(lang) {
+      document.documentElement.setAttribute('data-lang', lang);
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+      document.getElementById('ph-opt').textContent = lang === 'pt' ? 'Selecione o assunto' : 'Select a subject';
+    }
+    setLang('en');
+
+    /* ── SCROLL REVEAL ── */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── NAV HIGHLIGHT ── */
+    const allSections = document.querySelectorAll('section[id], div[id]');
+    const navAs = document.querySelectorAll('.nav-center a');
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      allSections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) cur = s.id; });
+      navAs.forEach(a => { a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--accent)' : ''; });
+    });
+
+    /* ── FORM ── */
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('contact-form').style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+      }, 700);
+    }
+  </script>
+</body>
+
+</html>
