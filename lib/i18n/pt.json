@@ -1,0 +1,183 @@
+{
+  "nav": {
+    "about": "Sobre",
+    "projects": "Projetos",
+    "process": "Processo",
+    "stack": "Stack",
+    "contact": "Contato"
+  },
+  "hero": {
+    "system_label": "SISTEMA ONLINE",
+    "tag": "// analytics_engineer · supply_chain · data_warehouse",
+    "headline": [
+      "Projeto a infraestrutura",
+      "que transforma dados brutos de Supply Chain",
+      "em decisões de diretoria."
+    ],
+    "sub": "5+ anos dentro de O2C, P2P, Estoque e Comércio Internacional. Não apenas consultando dados — construindo os sistemas que os tornam confiáveis.",
+    "cta_projects": "Ver Projetos",
+    "cta_linkedin": "LinkedIn",
+    "stats": {
+      "years_num": "5+",
+      "years_label": "Anos trabalhando\ncom dados de Supply Chain",
+      "impl_num": "4",
+      "impl_label": "Implementações de sistemas\nlideradas ou apoiadas",
+      "truth_num": "1×",
+      "truth_label": "Fonte única da verdade\nentregue por domínio",
+      "dash_num": "0",
+      "dash_label": "Dashboards entregues\nsem um dono definido"
+    },
+    "pipeline_teaser": {
+      "raw": "FONTE BRUTA",
+      "transform": "dbt / SQL",
+      "impact": "IMPACTO NO NEGÓCIO"
+    }
+  },
+  "about": {
+    "label": "// 01 — Sobre",
+    "title": ["O profissional que sabe", "onde o dado quebra."],
+    "p1": "Sou Data & Analytics Engineer com mais de 5 anos dentro dos domínios operacionais mais complexos: Order-to-Cash, Procure-to-Pay, Manufatura, Estoque e Comércio Exterior. Não apenas analisando dados — vivendo dentro dos processos.",
+    "p2": "Esse é meu diferencial. Entendo como uma Ordem de Compra se comporta diferente em três ERPs, por que o campo de status de uma nota fiscal muda de significado antes e depois do fechamento do mês, e onde o dado quebra silenciosamente antes de chegar a qualquer dashboard.",
+    "p3": "Participei de implementações de sistemas como NetSuite, Dynamics AX, Zoho e OSGT — tanto como Gerente de Projeto quanto como Key User. Esse histórico me permite projetar modelos de dados com o sistema de origem em mente.",
+    "p4": "Meus entregáveis são usados. Essa é a métrica que importa.",
+    "domains": [
+      "Order-to-Cash (O2C)",
+      "Procure-to-Pay (P2P)",
+      "Lead-to-Quote",
+      "Manufatura",
+      "Gestão de Estoque",
+      "Comércio Internacional (Importação & Exportação)",
+      "Transição & Implementação de ERP"
+    ]
+  },
+  "projects": {
+    "label": "// 02 — Projetos",
+    "title": ["Projetos que mudaram números,", "não só visualizações."],
+    "tab_problem": "Problema",
+    "tab_arch": "Arquitetura",
+    "tab_result": "Resultado",
+    "expand": "Inspecionar Processo →",
+    "collapse": "← Recolher",
+    "items": [
+      {
+        "num": "PROJECT_01",
+        "kpi": "−45%",
+        "kpi_label": "tempo de fechamento",
+        "title": "Analytics de O2C — Do Dado Bruto do ERP à Inteligência de Receita",
+        "overview": "Projeto dbt modelando o ciclo completo de O2C a partir das tabelas brutas do NetSuite. Substituiu processo manual semanal em Excel por dashboards Looker automatizados.",
+        "problem": "Um processo manual semanal em Excel era o motor de todos os relatórios de AR. Três analistas reconciliando os mesmos dados de notas do NetSuite — chegando a números diferentes. Sem definição única de 'recebível em aberto'. Zero visibilidade entre datas de fechamento. O mês levava 5 dias de reconciliação manual.",
+        "architecture": "Projeto dbt sobre tabelas brutas do NetSuite no BigQuery. Camada staging para deduplicação e tipagem. Camada intermediate para lógica de correspondência de pagamentos e classificação de buckets de aging de AR. Camada mart com fct_invoices e dim_customers como fonte única da verdade. Camada semântica Looker com métricas LookML, testadas contra a fonte a cada execução.",
+        "result": "Ciclo de relatório caiu de 5 dias para atualização automatizada no mesmo dia. Uma definição de cada KPI, de propriedade do Finance, documentada no dbt docs. O processo semanal de reconciliação em Excel foi aposentado — não substituído. Aposentado.",
+        "tags": ["dbt", "BigQuery", "Looker", "NetSuite", "SQL"]
+      },
+      {
+        "num": "PROJECT_02",
+        "kpi": "−30%",
+        "kpi_label": "divergências em conciliação AP",
+        "title": "Pipeline de P2P — Unificando Compras, Recebimento e Contas a Pagar",
+        "overview": "Pipeline ELT ingerindo dados do Dynamics AX no BigQuery, modelados em dbt nas camadas staging → intermediate → mart. Eliminou três definições conflitantes de 'PO em aberto'.",
+        "problem": "Compras, Recebimento e Contas a Pagar tinham cada um sua própria planilha de status de PO. Três definições conflitantes de 'PO em aberto' em uso simultâneo. A reconciliação de fechamento levava 3+ dias de cruzamento de exportações do Dynamics AX. Divergências de AP eram descobertas tarde — depois do fechamento, não antes.",
+        "architecture": "DAG no Airflow ingerindo o Dynamics AX via REST API na camada raw do BigQuery com agendamento diário. Projeto dbt com staging → intermediate → mart. Lógica de estado do ciclo de vida do PO centralizada em um único modelo intermediate — sem regras de negócio duplicadas. Camada semântica Power BI com segurança em nível de linha por departamento.",
+        "result": "Fonte única de verdade para status de PO, sob propriedade de Compras. Divergências de AP reduzidas em 30%. Fechamento de mês acelerado em 2 dias. Três processos de planilhas conflitantes aposentados permanentemente. Compras agora é autossuficiente em dashboards.",
+        "tags": ["Airflow", "dbt", "BigQuery", "Power BI", "Dynamics AX"]
+      },
+      {
+        "num": "PROJECT_03",
+        "kpi": "+50%",
+        "kpi_label": "visibilidade de estoque",
+        "title": "Estoque & Comércio Internacional — Visibilidade Sem Fronteiras",
+        "overview": "Modelo de dados cobrindo movimentações de estoque, fluxos de importação/exportação, compliance aduaneiro e custo de desembaraço, unificando múltiplos ERPs e sistemas logísticos.",
+        "problem": "O status de importação vivia em três planilhas de times separados. Sem visão unificada de movimentações de estoque, custos de desembaraço ou compliance aduaneiro. O Finance não conseguia conciliar custo de internação com lançamentos contábeis sem 2 dias de processo manual. O rastreamento de compliance era totalmente reativo.",
+        "architecture": "Modelo de dados unificado no BigQuery abrangendo tabelas de estoque do ERP, integrações com APIs de logística e um pipeline de metadados de documentos de comércio exterior via Cloud Storage GCP. Modelos dbt para rastreamento de movimentação de estoque, ciclo de vida de importações, cálculo de custo de internação e flags de status de compliance. Dashboards Looker com drill-path do nível de estoque → importação individual → documento de desembaraço.",
+        "result": "Visibilidade de estoque em tempo real em todos os locais e status de trânsito. Reconciliação de custo de desembaraço totalmente automatizada. Rastreamento de compliance aduaneiro migrado de planilhas para dashboard ao vivo. Expansão de 50% na cobertura de visibilidade de estoque.",
+        "tags": ["BigQuery", "dbt", "Python", "Looker", "GCP"]
+      }
+    ]
+  },
+  "process": {
+    "label": "// 03 — Processo",
+    "title": ["Da fonte bruta", "à decisão confiável."],
+    "subtitle": "Todo projeto segue a mesma arquitetura. Clique em um nó para inspecionar.",
+    "nodes": {
+      "raw": {
+        "title": "FONTE BRUTA",
+        "badge": "Inconsistente · Isolada · Não Testada",
+        "desc": "Tabelas de ERP, exportações de API, planilhas manuais, arquivos legados. O mundo real é bagunçado. Este é o ponto de partida de todo projeto.",
+        "items": ["Tabelas brutas NetSuite", "Exportações Dynamics AX", "Registros Zoho", "Planilhas manuais", "Feeds de API logística"]
+      },
+      "transform": {
+        "title": "TRANSFORMAÇÃO",
+        "badge": "Modelada · Testada · Documentada",
+        "desc": "Lógica de negócio aplicada como código. Três camadas explícitas com contratos entre elas. Nada avança para a próxima camada sem teste.",
+        "items": ["stg_* — deduplificado, tipado", "int_* — lógica de negócio aplicada", "mart_* — modelos prontos para decisão", "Testes dbt em cada camada", "Linhagem completa documentada"]
+      },
+      "impact": {
+        "title": "IMPACTO NO NEGÓCIO",
+        "badge": "Confiável · Adotado · Acionável",
+        "desc": "Camadas semânticas, dashboards e métricas com donos definidos e perguntas claras. Construído para adoção, não apenas visibilidade.",
+        "items": ["−45% ciclo de relatório (O2C)", "−30% divergências em AP", "+50% visibilidade de estoque", "Zero dashboards sem um dono", "Autossuficiência dos stakeholders"]
+      }
+    }
+  },
+  "stack": {
+    "label": "// 04 — Stack",
+    "title": ["Ferramentas para construir", "coisas em que confiam."],
+    "items": [
+      {
+        "name": "dbt",
+        "category": "Transformação",
+        "desc": "Uso dbt para transformar lógica de negócio em código: modelos modulares, contratos documentados, métricas testadas. Se um KPI vai para produção sem teste, não está pronto para produção."
+      },
+      {
+        "name": "BigQuery / GCP",
+        "category": "Warehouse",
+        "desc": "Minha camada analítica principal. Projeto schemas com custo e performance em mente — particionamento, clustering e modelos incrementais são padrão, não exceção."
+      },
+      {
+        "name": "Apache Airflow",
+        "category": "Orquestração",
+        "desc": "Construo pipelines observáveis por design: dependências explícitas, alertas e documentação integrados. Não pipelines que funcionam até misteriosamente pararem."
+      },
+      {
+        "name": "Looker / Power BI",
+        "category": "Entrega",
+        "desc": "Construo para adoção. Um dashboard que ninguém usa é um projeto fracassado. Todo relatório que entrego tem um dono, uma pergunta e uma ação esperada."
+      },
+      {
+        "name": "SQL & Python",
+        "category": "Core",
+        "desc": "SQL é como penso sobre dados. Python é como automatizo o que não deveria ser manual. Uso ambos onde são mais fortes, não onde estão na moda."
+      },
+      {
+        "name": "Sistemas ERP",
+        "category": "Domínio",
+        "desc": "NetSuite, Dynamics AX, Zoho, OSGT — estive dentro como Key User e PM. Sei como o dado de origem é gerado, não só como consultá-lo. Isso muda tudo na hora de modelar."
+      }
+    ]
+  },
+  "contact": {
+    "label": "// 05 — Vamos Conversar",
+    "title": "Se seu time ainda reconcilia métricas em reunião —",
+    "sub": "KPIs conflitantes, pipelines em que ninguém confia, dados que significam coisas diferentes para times diferentes. Esse é o problema que eu resolvo. Vamos conversar diretamente.",
+    "linkedin": "linkedin.com/in/jorge-peduti",
+    "email_label": "Enviar um e-mail",
+    "form_name": "Nome",
+    "form_name_placeholder": "Jorge Peduti",
+    "form_email_placeholder": "jorge@empresa.com",
+    "form_subject": "Assunto",
+    "form_message": "Mensagem",
+    "form_message_placeholder": "Me conte o problema, não a solução. Eu descubro o resto.",
+    "form_submit": "Enviar Mensagem →",
+    "form_success": "Mensagem recebida. Retorno em até 24h.",
+    "options": {
+      "placeholder": "Selecione um tópico...",
+      "fulltime": "Oportunidade CLT/PJ",
+      "freelance": "Projeto freelance / consultoria",
+      "collab": "Colaboração",
+      "other": "Outro"
+    }
+  },
+  "footer": {
+    "copy": "© 2026 Jorge Peduti — Analytics Engineer"
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "process": "Process",
+    "stack": "Stack",
+    "contact": "Contact"
+  },
+  "hero": {
+    "system_label": "SYSTEM ONLINE",
+    "tag": "// analytics_engineer · supply_chain · data_warehouse",
+    "headline": [
+      "I design the infrastructure",
+      "that turns raw Supply Chain data",
+      "into boardroom decisions."
+    ],
+    "sub": "5+ years inside O2C, P2P, Inventory, and International Trade. Not just querying data — building the systems that make it trustworthy.",
+    "cta_projects": "View Projects",
+    "cta_linkedin": "LinkedIn",
+    "stats": {
+      "years_num": "5+",
+      "years_label": "Years working with\nSupply Chain data",
+      "impl_num": "4",
+      "impl_label": "System implementations\nled or supported",
+      "truth_num": "1×",
+      "truth_label": "Source of truth\nper domain delivered",
+      "dash_num": "0",
+      "dash_label": "Dashboards built\nwithout a defined owner"
+    },
+    "pipeline_teaser": {
+      "raw": "RAW SOURCE",
+      "transform": "dbt / SQL",
+      "impact": "BUSINESS IMPACT"
+    }
+  },
+  "about": {
+    "label": "// 01 — About",
+    "title": ["The professional who knows", "where the data breaks."],
+    "p1": "I'm a Data & Analytics Engineer with over 5 years working inside the most operationally complex domains in business: Order-to-Cash, Procure-to-Pay, Manufacturing, Inventory, and International Trade. Not just analyzing data from them — living inside them.",
+    "p2": "That depth is my edge. I understand how a Purchase Order behaves differently across three ERP systems, why an invoice status field means different things before and after month-end close, and where the data silently breaks before it ever reaches a dashboard.",
+    "p3": "I've participated in system implementations and data transitions for NetSuite, Dynamics AX, Zoho, and OSGT — working as both Project Manager and Key User. That means I design data models with source systems in mind, not against them.",
+    "p4": "My deliverables get used. That's the metric that matters.",
+    "domains": [
+      "Order-to-Cash (O2C)",
+      "Procure-to-Pay (P2P)",
+      "Lead-to-Quote",
+      "Manufacturing",
+      "Inventory Management",
+      "International Trade (Import & Export)",
+      "ERP Transition & Implementation"
+    ]
+  },
+  "projects": {
+    "label": "// 02 — Projects",
+    "title": ["Work that changed numbers,", "not just views."],
+    "tab_problem": "Problem",
+    "tab_arch": "Architecture",
+    "tab_result": "Result",
+    "expand": "Inspect Process →",
+    "collapse": "← Collapse",
+    "items": [
+      {
+        "num": "PROJECT_01",
+        "kpi": "−45%",
+        "kpi_label": "reporting cycle time",
+        "title": "Order-to-Cash Analytics — From ERP Raw Data to Revenue Intelligence",
+        "overview": "Designed a dbt project modeling the full O2C cycle from NetSuite raw tables into a reliable mart layer. Replaced a weekly manual Excel process with automated Looker dashboards.",
+        "problem": "A weekly manual Excel process drove all AR reporting. Three analysts reconciling the same invoice data from NetSuite exports — each arriving at different numbers. No single definition of 'open receivable'. Zero visibility between close dates. Month-end took 5 days of manual reconciliation.",
+        "architecture": "dbt project on top of NetSuite BigQuery raw tables. Staging layer for deduplication and type casting. Intermediate layer for payment matching logic and AR aging bucket classification. Mart layer with fct_invoices and dim_customers as the single source of truth. Looker semantic layer with LookML metrics, tested against source at every run.",
+        "result": "Reporting cycle dropped from 5 days to same-day automated refresh. One definition of every KPI, owned by Finance, documented in dbt docs. The weekly Excel reconciliation process was retired — not replaced. Retired.",
+        "tags": ["dbt", "BigQuery", "Looker", "NetSuite", "SQL"]
+      },
+      {
+        "num": "PROJECT_02",
+        "kpi": "−30%",
+        "kpi_label": "AP reconciliation gaps",
+        "title": "Procure-to-Pay Pipeline — Unifying Purchasing, Receiving and AP Data",
+        "overview": "ELT pipeline ingesting Dynamics AX data into BigQuery, modeled in dbt across staging → intermediate → mart. Eliminated three conflicting definitions of 'open PO' across departments.",
+        "problem": "Procurement, Receiving, and Accounts Payable each had their own spreadsheet view of PO status. Three conflicting definitions of 'open PO' in simultaneous use. Month-end reconciliation took 3+ days of cross-referencing Dynamics AX exports. AP gaps were discovered late — after close, not before.",
+        "architecture": "Airflow DAG ingesting Dynamics AX via REST API into BigQuery raw layer on a daily schedule. dbt project with staging → intermediate → mart. PO lifecycle state logic centralized in a single intermediate model — no duplicated business rules. Power BI semantic layer with department-level row security connected to the mart.",
+        "result": "Single source of PO truth, owned by Procurement. AP reconciliation gaps reduced 30%. Month-end close accelerated by 2 days. Three conflicting spreadsheet processes retired permanently. Procurement now self-serves their dashboards without waiting for Finance.",
+        "tags": ["Airflow", "dbt", "BigQuery", "Power BI", "Dynamics AX"]
+      },
+      {
+        "num": "PROJECT_03",
+        "kpi": "+50%",
+        "kpi_label": "inventory visibility",
+        "title": "Inventory & International Trade — Visibility Across Borders",
+        "overview": "Architected a data model covering inventory movements, import/export flows, customs compliance, and landed cost tracking from multiple ERP and logistics systems.",
+        "problem": "Import status lived across three separate team spreadsheets. No unified view of inventory movements, landed costs, or customs compliance. Finance couldn't reconcile landed cost with accounting entries without a 2-day manual process. Customs tracking was entirely reactive — issues discovered after clearance, not during.",
+        "architecture": "Unified BigQuery data model spanning ERP inventory tables (multiple systems), logistics API integrations, and a document metadata pipeline for customs files via GCP Cloud Storage. dbt models for stock movement tracking, import flow lifecycle, landed cost calculation logic, and compliance status flags. Looker dashboards with drill-path from top-level inventory → individual import → customs clearance document.",
+        "result": "Real-time inventory visibility across all locations and transit statuses. Landed cost reconciliation fully automated. Customs compliance tracking moved from spreadsheets to a live dashboard monitored by the logistics team. 50% expansion in inventory coverage.",
+        "tags": ["BigQuery", "dbt", "Python", "Looker", "GCP"]
+      }
+    ]
+  },
+  "process": {
+    "label": "// 03 — Process",
+    "title": ["From raw source", "to trusted decision."],
+    "subtitle": "Every project follows the same architecture. Click a node to inspect.",
+    "nodes": {
+      "raw": {
+        "title": "RAW SOURCE",
+        "badge": "Inconsistent · Siloed · Untested",
+        "desc": "ERP tables, API exports, manual spreadsheets, legacy files. The real world is messy. This is the starting point for every project.",
+        "items": ["NetSuite raw tables", "Dynamics AX exports", "Zoho records", "Manual spreadsheets", "Logistics API feeds"]
+      },
+      "transform": {
+        "title": "TRANSFORMATION",
+        "badge": "Modeled · Tested · Documented",
+        "desc": "Business logic enforced as code. Three explicit layers with contracts between them. Nothing goes to the next layer untested.",
+        "items": ["stg_* — deduplicated, typed", "int_* — business logic applied", "mart_* — decision-ready models", "dbt tests at every layer", "Full lineage documented"]
+      },
+      "impact": {
+        "title": "BUSINESS IMPACT",
+        "badge": "Trusted · Adopted · Actionable",
+        "desc": "Semantic layers, dashboards, and metrics with named owners and defined questions. Built for adoption, not just visibility.",
+        "items": ["−45% reporting cycle (O2C)", "−30% AP reconciliation gaps", "+50% inventory visibility", "Zero dashboards without an owner", "Self-serve by stakeholders"]
+      }
+    }
+  },
+  "stack": {
+    "label": "// 04 — Stack",
+    "title": ["Tools I use to build", "things people trust."],
+    "items": [
+      {
+        "name": "dbt",
+        "category": "Transformation",
+        "desc": "I use dbt to enforce business logic as code: modular models, documented contracts, tested metrics. If a KPI goes to production without a test, it's not ready for production."
+      },
+      {
+        "name": "BigQuery / GCP",
+        "category": "Warehouse",
+        "desc": "My primary analytical layer. I design schemas with query cost and performance in mind — partitioning, clustering, and incremental models are defaults, not afterthoughts."
+      },
+      {
+        "name": "Apache Airflow",
+        "category": "Orchestration",
+        "desc": "I build pipelines that are observable by design: explicit dependencies, alerting, documentation baked in. Not pipelines that run until they mysteriously don't."
+      },
+      {
+        "name": "Looker / Power BI",
+        "category": "Delivery",
+        "desc": "I build for adoption. A dashboard no one uses is a failed project. Every report I deliver has a defined owner, a defined question, and a defined action it enables."
+      },
+      {
+        "name": "SQL & Python",
+        "category": "Core",
+        "desc": "SQL is how I think about data. Python is how I automate the parts that shouldn't be manual. I use both where they're strongest, not where they're fashionable."
+      },
+      {
+        "name": "ERP Systems",
+        "category": "Domain",
+        "desc": "NetSuite, Dynamics AX, Zoho, OSGT — I've been inside these as Key User and PM. I know how source data is generated, not just how to query it. That changes everything."
+      }
+    ]
+  },
+  "contact": {
+    "label": "// 05 — Let's Talk",
+    "title": "If your team still reconciles metrics in meetings —",
+    "sub": "Conflicting KPIs, pipelines nobody trusts, data that means different things to different teams. That's the problem I solve. Let's have a direct conversation.",
+    "linkedin": "linkedin.com/in/jorge-peduti",
+    "email_label": "Send an email",
+    "form_name": "Name",
+    "form_name_placeholder": "Jorge Peduti",
+    "form_email_placeholder": "jorge@company.com",
+    "form_subject": "Subject",
+    "form_message": "Message",
+    "form_message_placeholder": "Tell me about the problem, not the solution. I'll figure out the rest.",
+    "form_submit": "Send Message →",
+    "form_success": "Message received. I'll get back to you within 24h.",
+    "options": {
+      "placeholder": "Select a topic...",
+      "fulltime": "Full-time opportunity",
+      "freelance": "Freelance / consulting project",
+      "collab": "Collaboration",
+      "other": "Other"
+    }
+  },
+  "footer": {
+    "copy": "© 2026 Jorge Peduti — Analytics Engineer"
+  }
+}

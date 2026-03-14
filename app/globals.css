@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Design Tokens ── */
+@theme {
+  --color-background: #0c0e13;
+  --color-surface: #111520;
+  --color-surface-2: #161b28;
+  --color-border: #1e2533;
+  --color-border-2: #2a3347;
+  --color-accent: #e07b3a;
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0c0e13;
+  background-image: radial-gradient(circle, rgba(30, 37, 51, 0.55) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e2533;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3347;
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(224, 123, 58, 0.25);
+}
+
+/* ── Cursor blink ── */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.cursor-blink {
+  animation: blink 1.1s step-start infinite;
+}
+
+/* ── Pipeline particle ── */
+@keyframes particle-flow {
+  0% {
+    left: -6px;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% + 6px);
+    opacity: 0;
+  }
+}
+.particle {
+  position: absolute;
+  animation: particle-flow linear infinite;
+}
+
+/* ── Section base ── */
+section {
+  padding: 5rem 0;
 }
