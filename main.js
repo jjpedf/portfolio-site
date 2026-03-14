@@ -45,3 +45,26 @@ function handleSubmit(e) {
     document.getElementById('form-success').style.display = 'block';
   }, 700);
 }
+
+/* ── PROCESS PIPELINE ANIMATION ── */
+const pipeline = document.getElementById('process-pipeline');
+if (pipeline) {
+  const pipelineObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Animate pipeline fill
+        const fill = document.getElementById('pipeline-fill');
+        if (fill) fill.style.width = '100%';
+
+        // Stagger card reveals
+        const cards = pipeline.querySelectorAll('.process-card');
+        cards.forEach((card, i) => {
+          setTimeout(() => card.classList.add('visible'), 150 + i * 150);
+        });
+
+        pipelineObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  pipelineObserver.observe(pipeline);
+}
