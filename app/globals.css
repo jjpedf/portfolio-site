@@ -2,14 +2,14 @@
 
 /* ── Design Tokens ── */
 @theme {
-  --color-background: #0c0e13;
-  --color-surface: #111520;
-  --color-surface-2: #161b28;
-  --color-border: #1e2533;
-  --color-border-2: #2a3347;
-  --color-accent: #e07b3a;
-  --color-success: #4ade80;
-  --color-warning: #fbbf24;
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-surface-2: #162032;
+  --color-border: #1E3A52;
+  --color-border-2: #2D4F6E;
+  --color-accent: #10B981;
+  --color-success: #34D399;
+  --color-warning: #F59E0B;
 
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains);
@@ -27,10 +27,10 @@ html {
 }
 
 body {
-  background-color: #0c0e13;
-  background-image: radial-gradient(circle, rgba(30, 37, 51, 0.55) 1px, transparent 1px);
+  background-color: #0F172A;
+  background-image: radial-gradient(circle, rgba(30, 58, 82, 0.5) 1px, transparent 1px);
   background-size: 24px 24px;
-  color: #e2e8f0;
+  color: #F8FAFC;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -44,16 +44,16 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e2533;
+  background: #1E3A52;
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a3347;
+  background: #2D4F6E;
 }
 
 /* ── Selection ── */
 ::selection {
-  background: rgba(224, 123, 58, 0.25);
+  background: rgba(16, 185, 129, 0.25);
 }
 
 /* ── Cursor blink ── */

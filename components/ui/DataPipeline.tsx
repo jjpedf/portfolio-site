@@ -26,9 +26,9 @@ const NODES: NodeData[] = [
   {
     id: 'transform',
     icon: <Cpu size={18} />,
-    accentClass: 'text-accent',
-    borderClass: 'border-accent/40',
-    bgClass: 'bg-accent/5',
+    accentClass: 'text-warning',
+    borderClass: 'border-warning/40',
+    bgClass: 'bg-warning/5',
   },
   {
     id: 'impact',
@@ -56,9 +56,9 @@ interface DataPipelineProps {
   }
 }
 
-function Pipe({ color }: { color: 'accent' | 'success' }) {
-  const dotClass = color === 'accent' ? 'bg-accent' : 'bg-success'
-  const lineClass = color === 'accent' ? 'border-accent/30' : 'border-success/30'
+function Pipe({ color }: { color: 'warning' | 'success' }) {
+  const dotClass = color === 'warning' ? 'bg-warning' : 'bg-success'
+  const lineClass = color === 'warning' ? 'border-warning/30' : 'border-success/30'
 
   return (
     <div className="hidden md:flex items-center flex-1 max-w-20 relative mx-2">
@@ -74,7 +74,7 @@ function Pipe({ color }: { color: 'accent' | 'success' }) {
         />
       ))}
       <svg
-        className={`absolute right-0 top-1/2 -translate-y-1/2 ${color === 'accent' ? 'text-accent/40' : 'text-success/40'}`}
+        className={`absolute right-0 top-1/2 -translate-y-1/2 ${color === 'warning' ? 'text-warning/40' : 'text-success/40'}`}
         width="6"
         height="8"
         viewBox="0 0 6 8"
@@ -129,7 +129,7 @@ export default function DataPipeline({ nodes }: DataPipelineProps) {
                       (node.id === 'raw'
                         ? 'ring-slate-500'
                         : node.id === 'transform'
-                        ? 'ring-accent/60'
+                        ? 'ring-warning/60'
                         : 'ring-success/60')
                     : 'hover:opacity-80'
                 }`}
@@ -157,7 +157,7 @@ export default function DataPipeline({ nodes }: DataPipelineProps) {
 
               {/* Pipe connector */}
               {i < NODES.length - 1 && (
-                <Pipe color={i === 0 ? 'accent' : 'success'} />
+                <Pipe color={i === 0 ? 'warning' : 'success'} />
               )}
             </div>
           )
